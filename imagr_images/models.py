@@ -6,9 +6,10 @@ class Image(models.Model):
     title = models.CharField(max_length=100)
     date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
     date_mod = models.DateTimeField('date modified', auto_now=True)
-    date_pub = models.DateTimeField('date published', auto_now=True)
+    date_pub = models.DateTimeField('date published')
     privacy = models.IntegerField(choices=(('private', 0),
                                            ('public', 1),
+                                           ('shared', 2)
                                            ))
     owner = models.ForeignKey('django.contrib.auth.models.User')
 
@@ -21,12 +22,14 @@ class Albumn(models.Model):
     description = models.TextField()
     date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
     date_mod = models.DateTimeField('date modified', auto_now=True)
-    date_pub = models.DateTimeField('date published', auto_now=True)
+    date_pub = models.DateTimeField('date published')
     privacy = models.IntegerField(choices=(('private', 0),
                                            ('public', 1),
+                                           ('shared', 2)
                                            ))
     owner = models.ForeignKey('django.contrib.auth.models.User')
-    photos = models.ForeignKey(Image)
+    images = models.ManyToManyField(Image)
+    # cover = models.ForeignKey(Image)
 
     def __unicode__(self):
         return self.title
