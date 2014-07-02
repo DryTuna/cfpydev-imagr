@@ -11,7 +11,7 @@ class Image(models.Model):
                                            ('public', 1),
                                            ('shared', 2)
                                            ))
-    owner = models.ForeignKey('django.contrib.auth.models.User')
+    owner = models.ForeignKey('auth.User')
 
     def __unicode__(self):
         return self.title
@@ -27,7 +27,7 @@ class Albumn(models.Model):
                                            ('public', 1),
                                            ('shared', 2)
                                            ))
-    owner = models.ForeignKey('django.contrib.auth.models.User')
+    owner = models.ForeignKey('auth.User')
     images = models.ManyToManyField(Image)
     # cover = models.ForeignKey(Image)
 
