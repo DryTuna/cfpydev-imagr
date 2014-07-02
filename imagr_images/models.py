@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 
 class Image(models.Model):
@@ -9,9 +8,9 @@ class Image(models.Model):
     date_mod = models.DateTimeField('date modified', auto_now=True)
     date_pub = models.DateTimeField('date published', auto_now=True)
     privacy = models.IntegerField(choices=(('private', 0),
-                                          ('public', 1)
-                                          ))
-    owner = models.ForeignKey(User)
+                                           ('public', 1),
+                                           ))
+    owner = models.ForeignKey('django.contrib.auth.models.User')
 
     def __unicode__(self):
         return self.title
@@ -24,9 +23,9 @@ class Albumn(models.Model):
     date_mod = models.DateTimeField('date modified', auto_now=True)
     date_pub = models.DateTimeField('date published', auto_now=True)
     privacy = models.IntegerField(choices=(('private', 0),
-                                          ('public', 1)
-                                          ))
-    owner = models.ForeignKey(User)
+                                           ('public', 1),
+                                           ))
+    owner = models.ForeignKey('django.contrib.auth.models.User')
     photos = models.ForeignKey(Image)
 
     def __unicode__(self):
