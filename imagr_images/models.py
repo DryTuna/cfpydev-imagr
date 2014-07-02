@@ -1,9 +1,11 @@
 from django.db import models
 
+
 class Image(models.Model):
     image = models.FileField()
     title = models.CharField(max_length=200)
     date_created = models.DateTimeField('date uploaded')
+    public = models.IntegerField(default=0)
 
 
 class Albumn(models.Model):
@@ -11,3 +13,4 @@ class Albumn(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     date_created = models.DateTimeField('date uploaded')
+    public = models.IntegerField(default=0)
