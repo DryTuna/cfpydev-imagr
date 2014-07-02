@@ -1,16 +1,33 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Image(models.Model):
-    image = models.FileField()
-    title = models.CharField(max_length=200)
-    date_created = models.DateTimeField('date uploaded')
-    public = models.IntegerField(default=0)
+    image = models.FileField(upload_to='/photos/%Y/%m/%d')
+    title = models.CharField(max_length=100)
+    date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
+    date_mod = models.DateTimeField('date modified', auto_now=True)
+    date_pub = models.DateTimeField('date published', auto_now=True)
+    privacy = models.IntegerField(choices=(('private', 0),
+                                          ('public', 1)
+                                          ))
+    owner = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return self.title
 
 
 class Albumn(models.Model):
-    Photos = models.ForeignKey(Image)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=100)
     description = models.TextField()
-    date_created = models.DateTimeField('date uploaded')
-    public = models.IntegerField(default=0)
+    date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
+    date_mod = models.DateTimeField('date modified', auto_now=True)
+    date_pub = models.DateTimeField('date published', auto_now=True)
+    privacy = models.IntegerField(choices=(('private', 0),
+                                          ('public', 1)
+                                          ))
+    owner = models.ForeignKey(User)
+    photos = models.ForeignKey(Image)
+
+    def __unicode__(self):
+        return self.title
