@@ -33,3 +33,14 @@ class Albumn(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+class Relate(models.Model):
+    user1 = models.ForeignKey('auth.User')
+    user2 = models.ForeignKey('auth.User')
+    relation = models.IntegerField(choices=(('none', 0),
+                                            ('1 follow 2', 1),
+                                            ('2 follow 1', 2),
+                                            ('both', 3)
+                                            ))
+    friend = models.IntegerField(choices=(('no', 0), ('yes', 1)))
