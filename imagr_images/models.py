@@ -7,9 +7,9 @@ class Image(models.Model):
     date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
     date_mod = models.DateTimeField('date modified', auto_now=True)
     date_pub = models.DateTimeField('date published')
-    privacy = models.IntegerField(choices=(('private', 0),
-                                           ('public', 1),
-                                           ('shared', 2)
+    privacy = models.IntegerField(choices=((0, 'private'),
+                                           (1, 'public'),
+                                           (2, 'shared')
                                            ))
     owner = models.ForeignKey('auth.User')
 
@@ -23,9 +23,9 @@ class Albumn(models.Model):
     date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
     date_mod = models.DateTimeField('date modified', auto_now=True)
     date_pub = models.DateTimeField('date published')
-    privacy = models.IntegerField(choices=(('private', 0),
-                                           ('public', 1),
-                                           ('shared', 2)
+    privacy = models.IntegerField(choices=((0, 'private'),
+                                           (1, 'public'),
+                                           (2, 'shared')
                                            ))
     owner = models.ForeignKey('auth.User')
     images = models.ManyToManyField(Image)
@@ -36,11 +36,11 @@ class Albumn(models.Model):
 
 
 class Relate(models.Model):
-    user1 = models.ForeignKey('auth.User')
-    user2 = models.ForeignKey('auth.User')
-    relation = models.IntegerField(choices=(('none', 0),
-                                            ('1 follow 2', 1),
-                                            ('2 follow 1', 2),
-                                            ('both', 3)
+    user_1 = models.ForeignKey('auth.User', related_name='one')
+    user_2 = models.ForeignKey('auth.User', related_name='two')
+    relation = models.IntegerField(choices=((0, 'none'),
+                                            (1, '1 follow 2'),
+                                            (2, '2 follow 1'),
+                                            (3, 'both')
                                             ))
-    friend = models.IntegerField(choices=(('no', 0), ('yes', 1)))
+    friend = models.IntegerField(choices=((0, 'no'), (1, 'yes')))
