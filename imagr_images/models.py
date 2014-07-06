@@ -17,7 +17,7 @@ class Image(models.Model):
         return self.title
 
 
-class Albumn(models.Model):
+class Album(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
@@ -38,9 +38,9 @@ class Albumn(models.Model):
 class Relate(models.Model):
     user_1 = models.ForeignKey('auth.User', related_name='one')
     user_2 = models.ForeignKey('auth.User', related_name='two')
-    relation = models.IntegerField(choices=((0, 'none'),
+    relation = models.IntegerField(choices=((0, 'None'),
                                             (1, '1 follow 2'),
                                             (2, '2 follow 1'),
-                                            (3, 'both')
+                                            (3, 'Both')
                                             ))
-    friend = models.IntegerField(choices=((0, 'no'), (1, 'yes')))
+    friend = models.IntegerField(choices=((0, 'No'), (1, 'Yes')))
