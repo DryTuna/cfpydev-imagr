@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'imagr_images',
+    'imagr_users'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -86,3 +87,5 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = BASE_DIR + "/media/"
 
 MEDIA_URL = "http://media.example.com/"
+
+AUTH_USER_MODEL = 'imagr_users.ImagrUser'
