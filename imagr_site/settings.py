@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'imagr_users',
     'imagr_images',
+    'imagr_users'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,5 +85,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_URL = 'http://localhost:8000/media/'
 MEDIA_ROOT = BASE_DIR + "/media/"
+
+MEDIA_URL = "http://media.example.com/"
+
+AUTH_USER_MODEL = 'imagr_users.ImagrUser'

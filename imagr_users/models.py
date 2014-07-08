@@ -1,55 +1,30 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
+from django.db import models
 from django.db.models import Q
-
 
 FOLLOWING_BITS = {
     'left': 1,
     'right': 2
 }
 
+FOLLOWER_STATUSES = (
+    (0, u'not following'),
+    (1, u'left following right'),
+    (2, u'right following left'),
+    (3, u'both following'),
+)
 
-class Relationship(models.Model):
-    user_1 = models.ForeignKey('imagr_users.ImagrUser', related_name='one')
-    user_2 = models.ForeignKey('imagr_users.ImagrUser', related_name='two')
-    relation = models.IntegerField(choices=(
-        (0, 'none'),
-        (1, '1 follows 2'),
-        (2, '2 follows 1'),
-        (3, 'both')
-    ))
-    friendship = models.IntegerField(choices=(
-        (0, 'no'),
-        (1, '1 request 2'),
-        (2, '2 request 1'),
-        (3, 'yes'),
-        (4, '1 blocked 2'),
-        (8, '2 blocked 1')
-    ))
-
-    class Meta:
-        unique_together = ('one', 'two')
-
-    def __unicode__(self):
-        symbol = FOLLOWER_SYMBOLS.get(self.follower_status, ' - ')
-        representation = u'{} {} {}'.format(
-            unicode(self.left), symbol, unicode(self.right))
-        if self.friendship:
-            representation = representation.replace(u'-', u'F')
-        return representation
-
-    def clean(self):
-        one = self.user_1
-        two = self.user_2
-        one_two = Q(one=one) & Q(two=two)
-        two_one = Q(one=two) & Q(two=one)
-        if self.__class__.objects.filter(Q(one_two | two_one)).exists():
-            msg = u"A relationship already exists between {} and {}"
-            raise ValidationError(msg.format(one, two))
+FOLLOWER_SYMBOLS = {
+    0: u' x ',
+    1: u' ->',
+    2: u'<- ',
+    3: u'<->',
+}
 
 
 class ImagrUser(AbstractUser):
-    relationship = models.ManyToManyField(
+    relationships = models.ManyToManyField(
         'imagr_users.ImagrUser',
         related_name="+",
         symmetrical=False,
@@ -69,84 +44,156 @@ class ImagrUser(AbstractUser):
             name = self.username
         return name
 
-    def friends(self):
-        iam_1 = (
-            Q(one__user_1 = self) &
-            Q(one__relation__in = 3)
-        )
-        iam_2 = (
-            Q(two__user_2 = self) &
-            Q(two__relation__in = 3)
-        )
-        frnds = ImagrUser.objects.filter(
-            Q(iam_1 | iam_2)
-        )
-        return frnds
-
-    def followers(self):
-        iam_1 = (
-            Q(one__user_1 = self) &
-            Q(one__relation__in = [2, 3])
-        )
-        iam_2 = (
-            Q(two__user_2 = self) &
-            Q(two__relation__in = [1, 3])
-        )
-        followers = ImagrUser.objects.filter(
-            Q(iam_1 | iam_2)
-        )
-        return followers
-
-    def following(self):
-        iam_1 = (
-            Q(one__user_1 = self) &
-            Q(one__relation__in = [1, 3])
-        )
-        iam_2 = (
-            Q(two__user_2 = self) &
-            Q(two__relation__in = [2, 3])
-        )
-        following = ImagrUser.objects.filter(
-            Q(iam_1 | iam_2)
-        )
-        return following
-
     def follow(self, other):
+        """Self follows other
+
+        This action will create a relationship between self and other if it
+        does not already exist
+
+        The relationship object will be validated before save and if validation
+        fails, the error will not be handled by this method. Calling code is
+        responsible for handling validation errors.
+        """
         if other not in self.following():
-            rel = self._get_rel(other)
+            rel = self._relationship_with(other)
             if rel is not None:
-                for slot in ['one', 'two']:
+                for slot in ['left', 'right']:
                     if getattr(rel, slot) == self:
                         bitmask = FOLLOWING_BITS[slot]
-                        rel.relation = rel.relation | bitmask
+                        rel.follower_status = rel.follower_status | bitmask
                         break
             else:
                 rel = Relationship(
-                    one=self, two=other, relation=1
+                    left=self, right=other, follower_status=1
                 )
             rel.full_clean()
             rel.save()
 
     def unfollow(self, other):
+        """Self stops following other
+
+        This action will not remove existing relationship objects, but only
+        appropriately set the follower status of existing relationships
+        """
         if other not in self.following():
             return
-        rel = self._get_rel(other)
+        rel = self._relationship_with(other)
         if rel is not None:
-            for slot in ['one', 'two']:
+            for slot in ['left', 'right']:
                 if getattr(rel, slot) == self:
                     bitmask = FOLLOWING_BITS[slot]
-                    rel.relation = rel.relation & ~bitmask
+                    rel.follower_status = rel.follower_status & ~bitmask
                     rel.full_clean()
                     rel.save()
                     return
 
-    def _get_rel(self, other):
+    def request_friendship(self, other):
+        """Self requests a friendship with other
+
+        This will not create a relationship if one does not already exist
+        """
+        raise NotImplementedError
+
+    def accept_friendship(self, other):
+        """Self accepts a friendship request from other
+
+        This action will create a relationship between self and other if it
+        does not already exist
+        """
+        if other not in self.friends():
+            rel = self._relationship_with(other)
+            if rel is not None:
+                rel.friendship = True
+            else:
+                rel = Relationship(left=self, right=other, follower_status=0, friendship=True)
+        raise NotImplementedError
+
+    def end_friendship(self, other):
+        """Self terminates friendship with other
+        """
+        raise NotImplementedError
+
+    def friends(self):
+        """Return queryset of self's friends"""
+        friends = ImagrUser.objects.filter(
+            (Q(relationships_from__right=self) &
+             Q(relationships_from__friendship__exact=True)) |
+            (Q(relationships_to__left=self) &
+             Q(relationships_to__friendship__exact=True))
+        )
+        return friends
+
+    def followers(self):
+        """Return queryset of self's followers"""
+        # people who are following and are left in the relationship
+
+        left_followers = (
+            Q(relationships_from__right=self) &
+            Q(relationships_from__follower_status__in=[1, 3])
+        )
+        right_followers = (
+            Q(relationships_to__left=self) &
+            Q(relationships_to__follower_status__in=[2, 3])
+        )
+        followers = ImagrUser.objects.filter(
+            Q(left_followers | right_followers)
+        )
+        return followers
+
+    def following(self):
+        """Return queryset of those self is following"""
+        following_left = (
+            Q(relationships_to__left=self) &
+            Q(relationships_to__follower_status__in=[1, 3]))
+        following_right = (
+            Q(relationships_from__right=self) &
+            Q(relationships_from__follower_status__in=[2, 3])
+        )
+        following = ImagrUser.objects.filter(
+            Q(following_left | following_right)
+        )
+        return following
+
+    def _relationship_with(self, other):
         rel = None
         try:
-            rel = Relationship.objects.get(one=self, two=other)
+            rel = Relationship.objects.get(left=self, right=other)
         except Relationship.DoesNotExist:
             try:
-                rel = Relationship.objects.get(one=other, two=self)
+                rel = Relationship.objects.get(left=other, right=self)
             except Relationship.DoesNotExist:
                 pass
         return rel
+
+
+class Relationship(models.Model):
+    left = models.ForeignKey(
+        'imagr_users.ImagrUser',
+        related_name='relationships_from'
+    )
+    right = models.ForeignKey(
+        'imagr_users.ImagrUser',
+        related_name='relationships_to'
+    )
+    follower_status = models.IntegerField(choices=FOLLOWER_STATUSES)
+    friendship = models.NullBooleanField(null=True, blank=True, default=None)
+
+    class Meta:
+        unique_together = ('left', 'right')
+
+    def __unicode__(self):
+        symbol = FOLLOWER_SYMBOLS.get(self.follower_status, ' - ')
+        representation = u'{} {} {}'.format(
+            unicode(self.left), symbol, unicode(self.right))
+        if self.friendship:
+            representation = representation.replace(u'-', u'F')
+        return representation
+
+    def clean(self):
+        left = self.left
+        right = self.right
+        l2r = Q(left=left) & Q(right=right)
+        r2l = Q(left=right) & Q(right=left)
+        if self.__class__.objects.filter(Q(l2r | r2l)).exists():
+            msg = u"A relationship already exists between {} and {}"
+            raise ValidationError(msg.format(left, right))
