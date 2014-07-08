@@ -26,6 +26,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'imagr_users.ImagrUser'
 
 # Application definition
 
@@ -36,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'imagr_users',
     'imagr_images',
 )
 
@@ -81,3 +83,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = 'http://localhost:8000/media/'
+MEDIA_ROOT = BASE_DIR + "/media/"
