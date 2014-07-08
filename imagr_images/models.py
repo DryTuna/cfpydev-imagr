@@ -1,8 +1,9 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Image(models.Model):
-    image = models.FileField(upload_to='/photos/%Y/%m/%d')
+    image = models.FileField(upload_to='photos/%Y/%m/%d')
+    # image = models.FileField(image.size, upload_to='photos/%Y/%m/%d')
     title = models.CharField(max_length=100)
     date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
     date_mod = models.DateTimeField('date modified', auto_now=True)
