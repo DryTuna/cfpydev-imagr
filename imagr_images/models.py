@@ -4,7 +4,7 @@ from django.db import models
 
 class Image(models.Model):
     image = models.ImageField('The Image', upload_to='photos/%Y/%m/%d')
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=128)
     date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
     date_mod = models.DateTimeField('date modified', auto_now=True)
     date_pub = models.DateTimeField('date published')
@@ -31,7 +31,7 @@ class Image(models.Model):
 
 
 class Album(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=128)
     description = models.TextField()
     date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
     date_mod = models.DateTimeField('date modified', auto_now=True)
@@ -41,8 +41,18 @@ class Album(models.Model):
                                            (2, 'shared')
                                            ))
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
-    images = models.ManyToManyField(Image)
-    # cover = models.ForeignKey(Image)
+    images = models.ManyToManyField(
+        Image,
+        related_name="albums",
+        blank=True,
+        null=True,
+    )
+    cover_photo = models.ManyToManyField(
+        Image,
+        related_name="cover_of",
+        blank=True,
+        null=True,
+    )
 
     def __unicode__(self):
         return self.title
