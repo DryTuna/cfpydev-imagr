@@ -2,8 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Q
 
+
 class Image(models.Model):
-    image = models.FileField(upload_to='/photos/%Y/%m/%d')
+    image = models.FileField(upload_to='photos/%Y/%m/%d')
     title = models.CharField(max_length=100)
     date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
     date_mod = models.DateTimeField('date modified', auto_now=True)
@@ -29,7 +30,7 @@ class Albumn(models.Model):
                                            (2, 'shared')
                                            ))
     owner = models.ForeignKey('auth.User')
-    images = models.ManyToManyField(Image)
+    images = models.ForeignKey(Image)
     # cover = models.ForeignKey(Image)
 
     def __unicode__(self):
@@ -45,10 +46,10 @@ class Relate(models.Model):
                                             (3, 'both')
                                             ))
     friendship = models.IntegerField(choices=((0, 'no'),
-                                              (1, '1 request 2')
-                                              (2, '2 request 1')
-                                              (3, 'yes')
-                                              (4, '1 blocked 2')
+                                              (1, '1 request 2'),
+                                              (2, '2 request 1'),
+                                              (3, 'yes'),
+                                              (4, '1 blocked 2'),
                                               (8, '2 blocked 1')
                                               ))
 
