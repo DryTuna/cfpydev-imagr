@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'imagr_users',
     'imagr_images',
 )
 
@@ -90,4 +89,4 @@ MEDIA_ROOT = BASE_DIR + "/media/"
 
 MEDIA_URL = "http://media.imagr.com/"
 
-AUTH_USER_MODEL = 'imagr_users.ImagrUser'
+AUTH_USER_MODEL = 'imagr_images.ImagrUser'
