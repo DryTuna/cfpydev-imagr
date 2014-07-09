@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db import models
+from django.core.urlresolvers import reverse
+from django.template.defaultfilters import escape
 
 
 class Image(models.Model):
@@ -23,6 +25,13 @@ class Image(models.Model):
     # f = open(image.name, 'rb')
     # my_file = File(f)
     # image_size = my_file.size
+
+    def owner_link(self):
+        return '<a href="%s">%s</a>' % (reverse(
+            "admin:imagr_users_imagruser_change", args=(self.owner.id,)), escape(self.owner)
+        )
+    owner_link.allow_tags = True
+    owner_link.short_description = "I imagine..."
 
     def published_between(self, start, end):
         return start < self.date_pub < end

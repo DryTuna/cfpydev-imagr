@@ -5,7 +5,8 @@ from imagr_images.models import Image, Album
 
 class ImageAdmin(admin.ModelAdmin):
     readonly_fields = ('date_upl', 'date_mod')
-    list_display = ('title', 'owner', 'size')
+    list_display = ('title', 'owner_link', 'size')
+    # list_display_links = ('title', 'owner')
     list_filter = ('date_upl',)
 
 
