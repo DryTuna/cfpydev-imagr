@@ -24,6 +24,8 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
+TEMPLATE_DIRS = [os.path.dirname(__file__)+'/templates']
+
 ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'imagr_users.ImagrUser'
@@ -37,9 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'imagr_users',
     'imagr_images',
-    'imagr_users'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -87,6 +87,6 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = BASE_DIR + "/media/"
 
-MEDIA_URL = "http://media.example.com/"
+MEDIA_URL = "http://media.imagr.com/"
 
-AUTH_USER_MODEL = 'imagr_users.ImagrUser'
+AUTH_USER_MODEL = 'imagr_images.ImagrUser'
