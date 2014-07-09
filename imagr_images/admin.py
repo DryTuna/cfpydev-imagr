@@ -1,5 +1,5 @@
 from django.contrib import admin
-from imagr_images.models import Image, Album
+from imagr_images.models import Image, Album, ImagrUser, Relationship
 # Register your models here.
 
 
@@ -53,6 +53,14 @@ class AlbumAdmin(admin.ModelAdmin):
         'owner__last_name', 'owner__email'
     )
 
+
+class UserAdmin(admin.ModelAdmin):
+    search_fields = (
+        'username', 'first_name',
+        'last_name', 'email'
+    )
+
+admin.site.register(ImagrUser, UserAdmin)
+admin.site.register(Relationship)
 admin.site.register(Image, ImageAdmin)
 admin.site.register(Album, AlbumAdmin)
-
