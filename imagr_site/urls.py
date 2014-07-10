@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 from imagr_images import views
-from imagr_site.views import HomePageView
+# from imagr_site.views import HomePageView
 
 admin.autodiscover()
 
