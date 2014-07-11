@@ -33,7 +33,16 @@ class ImageTests(TestCase):
                           privacy=0, owner=user)
             image.save()
 
-        album = Album(title="Nathan's Album")
+        with open("/home/nathan/Pictures/linterLinting.png", 'rb') as fi:
+            an_image = File(fi)
+            image = Image(title=u"Nathan's Second Photo", image=an_image,
+                          privacy=0, owner=user)
+            image.save()
+
+        album = Album(title="Nathan's Album", privacy=0, owner=user)
+        album.save()
+        album2 = Album(title="Nathan's Second Album", privacy=0, owner=user)
+        album2.save()
 
     def tearDown(self):
         # reset MEDIA_ROOT
@@ -45,3 +54,31 @@ class ImageTests(TestCase):
         """
         image = Image.objects.get(title="Nathan's Photo")
         self.assertEqual(unicode(image), u"Nathan's Photo")
+
+    def test_put_one_image_in_album(self):
+        """
+        Test an image is properly represented by its title.
+        """
+        image = Image.objects.get(title="Nathan's Photo")
+        album = Album.objects.get(title="Nathan's Album")
+        album.images.add(image)
+        # album.images = image
+        album.save()
+        the_image = album.images.all()
+        self.assertEqual(the_image[0], image)
+
+    def test_put_multiple_images_in_album(self):
+        """
+        Test an image is properly represented by its title.
+        """
+        image = Image.objects.get(title="Nathan's Photo")
+        image2 = Image.objects.get(title="Nathan's Second Photo")
+        album2 = Album.objects.get(title="Nathan's Second Album")
+        album2.images.add(image)
+        album2.images.add(image2)
+        # album.images = image
+        album2.save()
+        image.save()
+        image2.save()
+        the_images = Image.objects.filter(albums__title__contains="Second")
+        self.assertTrue(image2 in the_images and image in the_images)
