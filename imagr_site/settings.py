@@ -105,5 +105,4 @@ class Dev(Base):
 
 
 class Prod(Base):
-    import pdb; pdb.set_trace()
     SECRET_KEY = values.SecretValue()
