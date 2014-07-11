@@ -11,12 +11,12 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-from configurations import Configuration
+from configurations import Configuration, values
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-class Dev(Configuration):
+class Base(Configuration):
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
 
@@ -98,3 +98,12 @@ class Dev(Configuration):
     MEDIA_URL = "http://media.imagr.com/"
 
     AUTH_USER_MODEL = 'imagr_images.ImagrUser'
+
+
+class Dev(Base):
+    pass
+
+
+class Prod(Base):
+    import pdb; pdb.set_trace()
+    SECRET_KEY = values.SecretValue()
