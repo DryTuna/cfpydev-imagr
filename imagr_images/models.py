@@ -27,8 +27,6 @@ FOLLOWER_SYMBOLS = {
 }
 
 
-
-
 class Relationship(models.Model):
     left = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -210,7 +208,7 @@ class Image(models.Model):
     title = models.CharField(max_length=128)
     date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
     date_mod = models.DateTimeField('date modified', auto_now=True)
-    date_pub = models.DateTimeField('date published')
+    date_pub = models.DateTimeField('date published', null=True)
     privacy = models.IntegerField(choices=((0, 'private'),
                                            (1, 'public'),
                                            (2, 'shared')
@@ -250,18 +248,13 @@ class Image(models.Model):
             ext = 'gb'
         return '%s %s' % (str(round(value, 2)), ext)
 
-    def published_between(self, start, end):
-        return start < self.date_pub < end
-    published_between.boolean = True
-    published_between.short_description = 'Published Between...?'
-
 
 class Album(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField()
     date_upl = models.DateTimeField('date uploaded', auto_now_add=True)
     date_mod = models.DateTimeField('date modified', auto_now=True)
-    date_pub = models.DateTimeField('date published')
+    date_pub = models.DateTimeField('date published', null=True)
     privacy = models.IntegerField(choices=((0, 'private'),
                                            (1, 'public'),
                                            (2, 'shared')
