@@ -57,15 +57,14 @@ class ImageTests(TestCase):
 
     def test_put_one_image_in_album(self):
         """
-        Test an image is properly represented by its title.
+        Test a single image can be inserted into an album.
         """
         image = Image.objects.get(title="Nathan's Photo")
         album = Album.objects.get(title="Nathan's Album")
         album.images.add(image)
-        # album.images = image
         album.save()
         the_image = album.images.all()
-        self.assertEqual(the_image[0], image)
+        self.assertEqual(list(the_image), [image])
 
     def test_put_multiple_images_in_album(self):
         """
