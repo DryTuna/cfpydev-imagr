@@ -1,6 +1,8 @@
 {% extends "imagr_images/index.html" %}
 {% block body %}
 
-<img src="{{ photo.image.url }}"/>
+{% for photo in photos %}
+    <img src="{{ photo.image.url }}"/>
+{% endfor %}
 
 {% endblock %}

@@ -20,5 +20,6 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^(?P<image_id>\d+)/$', views.photo, name='photo'),
+    url(r'^(?P<album_id>\d+)/$', views.photo, name='photo'),
+    url(r'^(?P<username>\w+)/$', views.profile, name='profile'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

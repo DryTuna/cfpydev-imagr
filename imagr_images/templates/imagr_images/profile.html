@@ -1,0 +1,10 @@
+{% extends "imagr_images/index.html" %}
+{% block body %}
+
+{% for cover in albumns %}
+<a href="{% url 'photo' cover.pk %}">
+    <img src="{{ cover.cover_photo.image.url }}"/>
+</a>
+{% endfor %}
+
+{% endblock %}
