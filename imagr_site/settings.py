@@ -85,8 +85,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = BASE_DIR + "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-MEDIA_URL = "http://media.imagr.com/"
+MEDIA_URL = "/media/"
 
 AUTH_USER_MODEL = 'imagr_images.ImagrUser'

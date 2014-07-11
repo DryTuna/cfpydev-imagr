@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
 from django.contrib import admin
-
+from django.conf import settings
 from imagr_images import views
 # from imagr_site.views import HomePageView
 
@@ -15,5 +16,7 @@ urlpatterns = patterns('',
     #     name='home'
     # ),
     # url(r'^templates/imagr_images/photos.html', views.photos, name='photos'),
+    url(r'^$', views.index, name='index'),
     url(r'^admin/', include(admin.site.urls)),
-)
+    url(r'^(?P<image_id>\d+)/$', views.photo, name='photo'),
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

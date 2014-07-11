@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+
+<p>MAIN PAGE</p>
+{% for pix in photos %}
+    <img src="{{ pix.image.url }}"/>
+{% endfor %}
+{% block body %}
+{% endblock %}
