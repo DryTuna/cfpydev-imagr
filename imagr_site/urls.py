@@ -17,6 +17,8 @@ urlpatterns = patterns('',
     # ),
     # url(r'^templates/imagr_images/photos.html', views.photos, name='photos'),
     url(r'^$', views.index, name='index'),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^(?P<image_id>\d+)/$', views.photo, name='photo'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

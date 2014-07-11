@@ -1,8 +1,16 @@
 <!DOCTYPE html>
+  <body>
+    <p>MAIN PAGE</p>
+    <div>
 
-<p>MAIN PAGE</p>
+      <a href="{% url 'django.contrib.auth.views.login' %}">login</a>
+
+      <a href="{% url 'django.contrib.auth.views.logout' %}">logout</a>
+
+    </div>
 {% for pix in photos %}
     <img src="{{ pix.image.url }}"/>
 {% endfor %}
 {% block body %}
 {% endblock %}
+  </body>
