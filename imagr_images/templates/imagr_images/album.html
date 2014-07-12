@@ -3,7 +3,7 @@
 <p>Images from album "{{ title }}"</p>
 {% for photo in photos %}
     <a href="{% url 'photo' photo.pk %}">
-        <img src="{{ photo.image.url }}"/>
+        <img src="{{ photo.image.url }}" width="240px" height="300px"/>
     </a>
 {% endfor %}
 

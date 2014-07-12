@@ -1,14 +1,15 @@
 {% extends "imagr_images/index.html" %}
 {% block body %}
 <p>{{ full_name }}  PROFILE PAGE</p>
+{% load thumbnail %}
 {% for cover in albumns %}
 <a href="{% url 'album' cover.pk %}">
-    <img src="{{ cover.cover_photo.image.url }}"/>
+    <img src="{{ cover.cover_photo.image.url }}" width="120px" height="150px" />
 </a>
 {% endfor %}
 {% for photo in photos %}
 <a href="{% url 'photo' photo.pk %}">
-    <img src="{{ photo.image.url }}"/>
+    <img src="{{ photo.image.url }}" width="240px" height="300px"/>
 </a>
 {% endfor %}
 

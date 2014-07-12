@@ -1,7 +1,8 @@
 <!DOCTYPE html>
   <body>
-    <p>MAIN PAGE</p>
-
+    <a href="{% url 'index' %}">MAIN PAGE</a>
+    <br/>
+    <br/>
     {% for user in users %}
         <a href="{% url 'profile' user.username %}">
             {{ user.username }}

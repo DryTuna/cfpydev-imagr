@@ -24,5 +24,4 @@ urlpatterns = patterns('',
     url(r'^(?P<image_id>\d+)/image_info/$', views.photo, name='photo'),
     url(r'^(?P<username>\w+)/$', views.profile, name='profile'),
     url(r'^(?P<username>\w+)/stream/$', views.stream, name='stream'),
-    #url(r'^(?P<username>\w+)(?P<image_id>\d+)/$', views.photo, name='photo'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
