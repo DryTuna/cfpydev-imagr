@@ -1,0 +1,10 @@
+{% extends "imagr_images/index.html" %}
+{% block body %}
+<p>Images from album "{{ title }}"</p>
+{% for photo in photos %}
+    <a href="{% url 'photo' album_id photo.pk %}">
+        <img src="{{ photo.image.url }}"/>
+    </a>
+{% endfor %}
+
+{% endblock %}

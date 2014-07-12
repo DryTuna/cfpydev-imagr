@@ -1,10 +1,11 @@
 {% extends "imagr_images/index.html" %}
 {% block body %}
-
+<p>{{ full_name }}  PROFILE PAGE</p>
 {% for cover in albumns %}
-<a href="{% url 'photo' cover.pk %}">
+<a href="{% url 'album' cover.pk %}">
     <img src="{{ cover.cover_photo.image.url }}"/>
 </a>
 {% endfor %}
 
 {% endblock %}
+

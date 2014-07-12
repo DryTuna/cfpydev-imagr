@@ -1,6 +1,18 @@
 <!DOCTYPE html>
   <body>
     <p>MAIN PAGE</p>
+
+    {% for user in users %}
+        <a href="{% url 'profile' user.username %}">
+            {{ user.username }}
+        </a>
+        <br/>
+    {% endfor %}
+
+
+{% block body %}
+{% endblock %}
+  </body>
     <div>
 
       <a href="{% url 'django.contrib.auth.views.login' %}">login</a>
@@ -8,6 +20,3 @@
       <a href="{% url 'django.contrib.auth.views.logout' %}">logout</a>
 
     </div>
-{% block body %}
-{% endblock %}
-  </body>
