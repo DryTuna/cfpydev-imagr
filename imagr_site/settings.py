@@ -106,3 +106,4 @@ class Dev(Base):
 
 class Prod(Base):
     SECRET_KEY = values.SecretValue()
+    DEBUG = False
