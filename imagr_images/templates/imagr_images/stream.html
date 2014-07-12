@@ -1,5 +1,5 @@
 {% for photo in photos %}
-
+    <a href="{% url 'photo' photo.pk %}">
         <img src="{{ photo.image.url }}"/>
-
+    </a>
 {% endfor %}

@@ -8,7 +8,7 @@ from imagr_images.models import Image, ImagrUser, Album
 
 def index(request):
     photos = Image.objects.all()
-    users = ImagrUser.objects.all()[:-1]
+    users = ImagrUser.objects.all()
     context = {'photos' : photos,
                'users' : users,}
     # template = loader.get_template('imagr_images/index.html')
@@ -18,8 +18,12 @@ def index(request):
 @login_required(login_url='/accounts/login/')
 def profile(request, username):
     user = ImagrUser.objects.get(username=username)
-    albumns = Album.objects.filter(owner=user.pk)
+    albumns = Album.objects.filter(owner=user)
+    photos = []
+    if not albumns:
+        photos = Image.objects.filter(owner=user)
     context = {'albumns': albumns,
+               'photos' : photos,
                'full_name': username}
     return render(request, 'imagr_images/profile.html', context)
 
@@ -35,7 +39,7 @@ def album(request, album_id):
 
 
 @login_required(login_url='/accounts/login/')
-def photo(request, album_id, image_id):
+def photo(request, image_id):
     photo = Image.objects.get(pk=image_id)
     context = {'image': photo.image.url,
                'title': photo.title,
