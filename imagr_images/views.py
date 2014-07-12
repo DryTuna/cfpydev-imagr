@@ -8,7 +8,7 @@ from imagr_images.models import Image, ImagrUser, Album
 
 def index(request):
     photos = Image.objects.all()
-    users = ImagrUser.objects.all()
+    users = ImagrUser.objects.all()[:-1]
     context = {'photos' : photos,
                'users' : users,}
     # template = loader.get_template('imagr_images/index.html')
@@ -43,6 +43,19 @@ def photo(request, album_id, image_id):
                'owner_name': photo.owner.username,
                'username': photo.owner.username,}
     return render(request, 'imagr_images/photo.html', context)
+
+
+@login_required(login_url='/accounts/login/')
+def stream(request, username):
+    user = ImagrUser.objects.get(username=username)
+    friends = user.friends()
+    followings = user.following()
+    result = []
+    for i in list(friends | followings):
+        pix = Image.objects.filter(owner=i).order_by('date_upl')[0]
+        result.append(pix)
+    context = {'photos' : result}
+    return render(request, 'imagr_images/stream.html', context)
 
 
 def logout_view(request):
