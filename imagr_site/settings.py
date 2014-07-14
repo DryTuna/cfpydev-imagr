@@ -38,7 +38,6 @@ class Base(Configuration):
 
     AUTH_USER_MODEL = 'imagr_users.ImagrUser'
 
-    # Application definition
 
     INSTALLED_APPS = (
         'django.contrib.admin',
@@ -47,8 +46,11 @@ class Base(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'sorl.thumbnail',
         'imagr_images',
     )
+
+    # Application definition
 
     MIDDLEWARE_CLASSES = (
         'django.contrib.sessions.middleware.SessionMiddleware',
@@ -93,12 +95,13 @@ class Base(Configuration):
 
     STATIC_URL = '/static/'
 
-    MEDIA_ROOT = BASE_DIR + "/media/"
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-    MEDIA_URL = "http://media.imagr.com/"
+    MEDIA_URL = "/media/"
 
     AUTH_USER_MODEL = 'imagr_images.ImagrUser'
 
+    THUMBNAIL_DEBUG = DEBUG
 
 class Dev(Base):
     pass

@@ -266,12 +266,7 @@ class Album(models.Model):
         blank=True,
         null=True,
     )
-    cover_photo = models.ManyToManyField(
-        Image,
-        related_name="cover_of",
-        blank=True,
-        null=True,
-    )
+    cover_photo = models.ForeignKey(Image)
 
     def __unicode__(self):
         return self.title
