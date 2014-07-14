@@ -1,10 +1,13 @@
 {% extends "imagr_images/index.html" %}
 {% block body %}
 <p>Images from album "{{ title }}"</p>
+{% load thumbnail %}
 {% for photo in photos %}
+    {% thumbnail photo.image "240x310" crop="center" as im %}
     <a href="{% url 'photo' photo.pk %}">
-        <img src="{{ photo.image.url }}" width="240px" height="300px"/>
+        <img src="{{ im.url }}"/>
     </a>
+    {% endthumbnail %}
 {% endfor %}
 
 {% endblock %}

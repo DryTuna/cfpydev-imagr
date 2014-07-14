@@ -3,14 +3,18 @@
 <p>{{ full_name }}  PROFILE PAGE</p>
 {% load thumbnail %}
 {% for cover in albumns %}
+{% thumbnail cover.cover_photo.image "240x310" crop="center" as im %}
 <a href="{% url 'album' cover.pk %}">
-    <img src="{{ cover.cover_photo.image.url }}" width="120px" height="150px" />
+    <img src="{{ im.url }}"/>
 </a>
+{% endthumbnail %}
 {% endfor %}
 {% for photo in photos %}
+{% thumbnail photo.image "240x310" crop="center" as im %}
 <a href="{% url 'photo' photo.pk %}">
-    <img src="{{ photo.image.url }}" width="240px" height="300px"/>
+    <img src="{{ im.url }}"/>
 </a>
+{% endthumbnail %}
 {% endfor %}
 
 {% endblock %}

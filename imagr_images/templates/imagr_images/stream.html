@@ -1,5 +1,8 @@
+{% load thumbnail %}
 {% for photo in photos %}
+    {% thumbnail photo.image "240x310" crop="center" as im %}
     <a href="{% url 'photo' photo.pk %}">
-        <img src="{{ photo.image.url }}"/>
+        <img src="{{ im.url }}"/>
     </a>
+    {% endthumbnail %}
 {% endfor %}
