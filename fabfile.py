@@ -156,7 +156,7 @@ def _mass_install():
     sudo('apt-get install postgresql postgresql-contrib')
     sudo('apt-get install python-setuptools')
     sudo('apt-get install python-pip')
-    sudo('pip install requirements')
+    sudo('pip install -r requirements.txt')
 
 
 def mass_install():
