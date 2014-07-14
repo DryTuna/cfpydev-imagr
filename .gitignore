@@ -54,3 +54,5 @@ docs/_build/
 
 # local database
 media/
+
+setEnviron.sh
