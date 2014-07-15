@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-  <body>
-    <a href="{% url 'index' %}">MAIN PAGE</a>
-    <br/>
-    <br/>
-    {% for user in users %}
-        <a href="{% url 'profile' user.username %}">
-            {{ user.username }}
-        </a>
-        <br/>
-    {% endfor %}
-
-
-{% block body %}
-{% endblock %}
-  </body>
-    <div>
-
+  <head>
+    <link rel="stylesheet" href="/static/imagr.css">
+  </head>
+  <header>
+    <div id="login_button">
       <a href="{% url 'django.contrib.auth.views.login' %}">login</a>
-
       <a href="{% url 'django.contrib.auth.views.logout' %}">logout</a>
-
     </div>
+    <a id="main_button" href="{% url 'index' %}">MAIN PAGE</a>
+    <br/>
+    <div style="top:100px; position:relative;">
+    {% for user in users %}
+      <a href="{% url 'profile' user.username %}">
+        {{ user.username }}
+      </a>
+    {% endfor %}
+    </div>
+  </header>
+  <body>
+    <div id="body">
+      <div class="total">
+        {% block body %}
+        {% endblock %}
+      </div>
+      <p></p>
+    </div>
+  </body>

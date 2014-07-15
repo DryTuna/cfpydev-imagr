@@ -2,20 +2,31 @@
 {% block body %}
 <p>{{ full_name }}  PROFILE PAGE</p>
 {% load thumbnail %}
-{% for cover in albumns %}
-{% thumbnail cover.cover_photo.image "240x310" crop="center" as im %}
-<a href="{% url 'album' cover.pk %}">
-    <img src="{{ im.url }}"/>
-</a>
-{% endthumbnail %}
-{% endfor %}
-{% for photo in photos %}
-{% thumbnail photo.image "240x310" crop="center" as im %}
-<a href="{% url 'photo' photo.pk %}">
-    <img src="{{ im.url }}"/>
-</a>
-{% endthumbnail %}
-{% endfor %}
+<div class="album_list">
+    {% for cover in albumns %}
+    <div class="albums">
+        {% thumbnail cover.cover_photo.image "170x200" crop="center" as im %}
+            <img class="album_cover" src="{{ im.url }}"/>
+        {% endthumbnail %}
+        <a href="{% url 'album' cover.pk %}">
+            <img class="album_book" src='/static/Imagr_Album_1.png'/>
+        </a>
+    </div>
+    {% endfor %}
+    <div class="albums">
+        <img class="album_book" src='/static/Imagr_Album_6.png'/>
+    </div>
+</div>
+
+<div class="photo_list">
+    {% for photo in photos %}
+        {% thumbnail photo.image "220x220" crop="center" as im %}
+            <a href="{% url 'photo' photo.pk %}">
+                <img style="margin:6px;" src="{{ im.url }}"/>
+            </a>
+        {% endthumbnail %}
+    {% endfor %}
+</div>
 
 {% endblock %}
 
