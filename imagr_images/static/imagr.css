@@ -1,0 +1,89 @@
+header {
+    background-color: #9999FF;
+    width: 900px;
+    min-height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+header #login_button {
+    float: right;
+    padding: 5px;
+    margin: 5px;
+}
+
+header #main_button{
+    float: left;
+    padding: 5px;
+    margin: 5px;
+}
+
+body {
+    background-color: #E6E6E6;
+}
+
+body #body {
+    background-color: #CC99FF;
+    background-color: white;
+    width: 890px;
+    min-height: 750px;
+    padding: 5px;
+    margin: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body #navigation {
+    background-color: #F0D1B2;
+    background-color: white;
+    width: 150px;
+    min-height: 750px;
+    padding: 5px;
+    float: left;
+}
+
+.total {
+    background-color: #CCFF66;
+    background-color: white;
+    width: 880px;
+    min-height: 750px;
+    padding: 5px;
+    margin-left: auto;
+}
+
+.album_list {
+    background-color: gray;
+    background-color: white;
+    width: 880px;
+    min-height: 350px;
+}
+
+.albums {
+    position: relative;
+    float: left;
+    background-color: white;
+    width: 250px;
+    height: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.albums .album_book {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.albums .album_cover {
+    position: relative;
+    top: 80px;
+    left: 60px;
+}
+
+.photo_list {
+    background-color: black;
+    width: 710px;
+    min-height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
