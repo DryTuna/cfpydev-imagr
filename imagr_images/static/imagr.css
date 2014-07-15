@@ -45,7 +45,7 @@ body #navigation {
 .total {
     background-color: #CCFF66;
     background-color: white;
-    width: 900px;
+    width: 880px;
     min-height: 750px;
     padding: 5px;
     margin-left: auto;
@@ -54,7 +54,7 @@ body #navigation {
 .album_list {
     background-color: gray;
     background-color: white;
-    width: 900px;
+    width: 880px;
     min-height: 350px;
 }
 
@@ -81,7 +81,7 @@ body #navigation {
 }
 
 .photo_list {
-    background-color: white;
+    background-color: black;
     width: 710px;
     min-height: 100px;
     margin-left: auto;
