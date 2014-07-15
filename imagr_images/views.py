@@ -20,8 +20,7 @@ def profile(request, username):
     user = ImagrUser.objects.get(username=username)
     albumns = Album.objects.filter(owner=user)
     photos = []
-    if not albumns:
-        photos = Image.objects.filter(owner=user)
+    photos = Image.objects.filter(owner=user)
     context = {'albumns': albumns,
                'photos' : photos,
                'full_name': username}
