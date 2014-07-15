@@ -3,6 +3,7 @@ from fabric.api import env
 from fabric.api import prompt
 from fabric.api import execute
 from fabric.api import sudo
+from fabric.api import settings
 from fabric import contrib
 import boto.ec2
 import time
@@ -118,8 +119,16 @@ def run_command_on_selected_server(command):
     execute(command, hosts=selected_hosts)
 
 
+# def run_psql_command_on_selected_server(command):
+#     select_instance()
+#     selected_hosts = [
+#         'postgres@' + env.active_instance.public_dns_name
+#     ]
+#     execute(command, hosts=selected_hosts)
+
+
 def _install_nginx():
-    sudo('apt-get install nginx')
+    sudo('apt-get -y install nginx')
     print "installed nginx"
     sudo('/etc/init.d/nginx start')
 
@@ -129,7 +138,7 @@ def install_nginx():
 
 
 def _install_supervisor():
-    sudo('apt-get install supervisor')
+    sudo('apt-get -y install supervisor')
     print "installed supervisor"
     sudo('mv ./cfpydev-imagr/supervisord.conf /etc/supervisor/conf.d/cfpydev-imagr.conf')
     sudo('/etc/init.d/supervisor stop')
@@ -152,15 +161,35 @@ def move_nginx_files():
     run_command_on_selected_server(_move_nginx_files)
 
 
+def _psql_setup():
+    sudo('psql < ~/cfpydev-imagr/setup.sql', user='postgres')
+    sudo('/usr/bin/python cfpydev-imagr/manage.py syncdb --noinput')
+    sudo('/usr/bin/python cfpydev-imagr/manage.py loaddata cfpydev-imagr/user.json')
+
+
+
 def _mass_install():
-    sudo('apt-get install postgresql postgresql-contrib')
-    sudo('apt-get install python-setuptools')
-    sudo('apt-get install python-pip')
-    sudo('pip install -r requirements.txt')
+    sudo('apt-get update')
+    sudo('apt-get -y install postgresql postgresql-contrib')
+    sudo('mv /etc/postgresql/9.1/main/pg_hba.conf /etc/postgresql/9.1/main/pg_hba.back')
+    sudo('mv cfpydev-imagr/pg_hba.conf /etc/postgresql/9.1/main/pg_hba.conf')
+    sudo('service postgresql restart')
+    sudo('apt-get -y install python-setuptools')
+    sudo('apt-get -y install python-dev')
+    sudo('apt-get -y install python-pip')
+    sudo('apt-get -y install libpq-dev')
+    sudo('apt-get -y install libjpeg-dev')
+    with settings(warn_only=True):
+        sudo('pip install -r ~/cfpydev-imagr/requirements.txt')
+    # sudo('pip install django-configurations')
+    # sudo('pip install sorl-thumbnail')
+    # sudo('pip install psycopg2')
 
 
 def mass_install():
     run_command_on_selected_server(_mass_install)
+    run_command_on_selected_server(_psql_setup)
+
 
 
 def stop_instance():
@@ -208,3 +237,4 @@ def deploy():
     mass_install()
     install_supervisor()
     move_nginx_files()
+
