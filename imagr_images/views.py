@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-# from django.template import loader
 
 from imagr_images.models import Image, ImagrUser, Album
 

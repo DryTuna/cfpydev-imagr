@@ -164,7 +164,6 @@ def move_nginx_files():
 def _psql_setup():
     sudo('psql < ~/cfpydev-imagr/setup.sql', user='postgres')
     sudo('/usr/bin/python cfpydev-imagr/manage.py syncdb --noinput')
-    sudo('/usr/bin/python cfpydev-imagr/manage.py loaddata cfpydev-imagr/user.json')
 
 
 
