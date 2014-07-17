@@ -1,0 +1,15 @@
+{% extends "imagr_images/index.html" %}
+
+{% block body %}
+
+<p>REGISTRATION</p>
+
+<form action="{% url 'registration_register' %}" method="POST">
+{% csrf_token %}
+
+<table> {{ form.as_table }} </table>
+
+<input type="submit" value="TOUCH ME!">
+</form>
+
+{% endblock %}

@@ -48,6 +48,7 @@ class Base(Configuration):
         'django.contrib.staticfiles',
         'sorl.thumbnail',
         'imagr_images',
+        'registration',
     )
 
     # Application definition
@@ -103,6 +104,8 @@ class Base(Configuration):
     AUTH_USER_MODEL = 'imagr_images.ImagrUser'
 
     THUMBNAIL_DEBUG = DEBUG
+
+    ACCOUNT_ACTIVATION_DAYS = 2
 
 class Dev(Base):
     pass
