@@ -1,6 +1,9 @@
 {% extends "imagr_images/index.html" %}
 {% block body %}
 <p>{{ full_name }}  PROFILE PAGE</p>
+<a href="{% url 'stream' full_name %}">
+STREAMING
+</a>
 {% load thumbnail %}
 <div class="album_list">
     {% for cover in albumns %}
